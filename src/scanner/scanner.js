@@ -12,19 +12,25 @@ module.exports = class PortScanner {
 
 	async scan(host, port) {
 		return new Promise((resolve) => {
-			const pingData = await this.pinger.ping(host);
-			const {alive} = pingData;
-			if (!alive) {
-				return resolve({error: "Host not alive"})
-			}
+			
 			try {
-				this.manager.openConnection(host, port);
-				const response = await this.manager.waitForResponse();
+				const response = await this.manager.openConnection(host, port);
 				resolve(response);
 			} catch(error) {
 				resolve({error: "Port closed"})
 			}
 		});
+	}
+
+	async portListScan(host, ports = this.defaultPorts) {
+		const pingData = await this.pinger.ping(host);
+		const {alive} = pingData;
+		if (!alive) {
+			return {error: "Host not alive"};
+		}
+		const scanPromises = ports.map(port => this.scan(host, port));
+		const openPorts = await Promise.all(scanPromises);
+		return openPorts;
 	}
 
     static createInstance() {

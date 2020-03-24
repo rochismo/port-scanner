@@ -6,7 +6,7 @@ const routes = require("./src/routes");
 const app = express();
 
 const port = process.env.PORT || 8000;
-
+console.log(routes);
 // Body parser middleware
 app.use(express.urlencoded({extended: false}));
 

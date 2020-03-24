@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const routesPath = path.join(process.cwd(), "routes");
-
+console.log(routesPath)
 const data = fs.readdirSync(routesPath);
 
 const routes = data.reduce((routes, route) => {
