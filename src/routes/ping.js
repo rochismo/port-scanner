@@ -1,21 +1,6 @@
 const router = require("express").Router();
 const {pinger, utils} = require('@rochismo/net-utils');
 
-async function pingSweep() {
-    const details = await utils.getDetails();
-    let ip = details.cidr;
-    ip = ip.split(",");
-    ip = ip[0];
-    let aliveHosts;
-    aliveHosts = await pinger.pingSweep(ip);
-    return aliveHosts;
-}
-
-pingSweep().then(function (data) {
-    console.log(data)
-});
-
-
 router.get("/", (req, res) => {
     async function pingToSelf() {
         const details = await utils.getDetails();
@@ -38,6 +23,5 @@ router.get("/pingSweep", (req, res) => {
         return aliveHosts;
     }
 });
-
 
 module.exports = router;
