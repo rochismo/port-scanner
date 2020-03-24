@@ -15,14 +15,9 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/portscannerfinalproject/port-scanner#readme",
   "dependencies": {
-<<<<<<< HEAD
-    "@rochismo/net-utils": "^1.0.7",
+    "@rochismo/net-utils": "^1.0.10",
     "express": "^4.17.1",
     "random-bytes": "^1.0.0"
-=======
-    "@rochismo/net-utils": "^1.0.10",
-    "express": "^4.17.1"
->>>>>>> a1cc4177030fe36c67cc97b6120a3beb051e6e04
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
