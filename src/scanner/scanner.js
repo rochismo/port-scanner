@@ -1,17 +1,16 @@
 const data = { instance: null };
 const SocketManager = require("./socketManager.js");
-const {Pinger} = require("@rochismo/net-utils");
+const {pinger} = require("@rochismo/net-utils");
 
 module.exports = class PortScanner {
     constructor(sse) {
 		this.defaultPorts = [21, 23, 80, 443, 3306, 8080];
-		this.pinger = new Pinger(sse);
 		this.manager = new SocketManager();
 		this.sse = sse;
 	}
 
-	async scan(host, port) {
-		return new Promise((resolve) => {
+	scan(host, port) {
+		return new Promise(async (resolve) => {
 			
 			try {
 				const response = await this.manager.openConnection(host, port);
@@ -23,7 +22,7 @@ module.exports = class PortScanner {
 	}
 
 	async portListScan(host, ports = this.defaultPorts) {
-		const pingData = await this.pinger.ping(host);
+		const pingData = await pinger.ping(host);
 		const {alive} = pingData;
 		if (!alive) {
 			return {error: "Host not alive"};
