@@ -11,7 +11,7 @@ async function pingSweep(req, res) {
 async function pingHost(req, res) {
     const ip = req.body.ip;
     if (utils.isValidIp(ip)) {
-        const isLiving = pinger.ping(ip);
+        const isLiving = await pinger.ping(ip);
         res.status(200).json({
             "isLiving": isLiving,
             "message": "valid IP"

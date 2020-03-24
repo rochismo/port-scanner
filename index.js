@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 // Body parser middleware
 app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 routes.forEach(({path, router}) => app.use(`/${path}`, router));
 
