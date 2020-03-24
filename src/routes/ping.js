@@ -22,8 +22,25 @@ async function pingHost(req, res) {
     })
 }
 
-router.get("/pingSweep", pingSweep(req, res));
 
-router.post("/pingHost", pingHost(req, res));
+async function pingHost1(req, res) {
+    //const ip = req.body.ip;
+    //if (utils.isValidIp(ip)) {
+    const isLiving = pinger.ping("192.168.1.1");
+    console.log(isLiving);
+    res.status(200).json({
+        "isLiving": isLiving,
+        "message": "valid IP"
+    })
+    /*} else res.status(200).json({
+        "isLiving": false,
+        "message": "Insert valid IP"
+    })*/
+}
+
+pingHost1();
+/*router.get("/pingSweep", pingSweep());
+
+router.post("/pingHost", pingHost());*/
 
 module.exports = router;
