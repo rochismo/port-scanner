@@ -1,27 +1,29 @@
 const router = require("express").Router();
 const {pinger, utils} = require('@rochismo/net-utils');
 
-router.get("/", (req, res) => {
-    async function pingToSelf() {
-        const details = await utils.getDetails();
-        let ip = details.ip_cidr;
-        ip = ip.split("/");
-        ip = ip + "'";
-        ip = ip[0];
-        return await pinger.ping(ip)
-    }
-});
+async function pingSweep(req, res) {
+    const details = await utils.getDetails();
+    const ip = details.cidr.split(",")[0];
+    const aliveHosts = await pinger.pingSweep(ip);
+    res.status(200).json(aliveHosts)
+}
 
-router.get("/pingSweep", (req, res) => {
-    async function pingSweep() {
-        const details = await utils.getDetails();
-        let ip = details.cidr;
-        ip = ip.split(",");
-        ip = ip[0];
-        let aliveHosts;
-        aliveHosts = await pinger.pingSweep(ip);
-        return aliveHosts;
-    }
-});
+async function pingHost(req, res) {
+    const ip = req.body.ip;
+    if (utils.isValidIp(ip)) {
+        const isLiving = pinger.ping(ip);
+        res.status(200).json({
+            "isLiving": isLiving,
+            "message": "valid IP"
+        })
+    } else res.status(200).json({
+        "isLiving": false,
+        "message": "Insert valid IP"
+    })
+}
+
+router.get("/pingSweep", pingSweep(req, res));
+
+router.post("/pingHost", pingHost(req, res));
 
 module.exports = router;
