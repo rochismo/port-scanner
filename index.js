@@ -13,5 +13,5 @@ app.use(express.json());
 routes.forEach(({path, router}) => app.use(`/${path}`, router));
 
 app.listen(port, () => {
-    console.log()
+    console.log(`http://localhost:${port}`)
 });
