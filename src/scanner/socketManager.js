@@ -18,10 +18,4 @@ module.exports = class SocketManager {
             }); 
         });
     }
-
-    async onError(error) {}
-
-    async onClose(hadError) {}
-
-    async onTimeout(error) {}
 };
