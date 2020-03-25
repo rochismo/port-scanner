@@ -16,7 +16,7 @@ async function pingHost(req, res) {
             "isLiving": isLiving,
             "message": "valid IP"
         })
-    } else res.status(200).json({
+    } else res.status(400).json({
         "isLiving": false,
         "message": "Insert valid IP"
     })
