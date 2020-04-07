@@ -32,9 +32,7 @@ module.exports = class SocketManager {
             // In case we get data first
             socket.on("data", (data) => {
                 status.open = true;
-                if (port === 8080) {
-                    console.log(data);
-                }
+
                 socket.destroy();
             });
 
