@@ -16,6 +16,7 @@
   "homepage": "https://bitbucket.org/portscannerfinalproject/port-scanner#readme",
   "dependencies": {
     "@rochismo/net-utils": "^1.0.14",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "random-bytes": "^1.0.0"
   },

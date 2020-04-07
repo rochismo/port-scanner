@@ -2,10 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 const routesPath = path.join(process.cwd(), "src/routes");
-console.log(routesPath)
 const data = fs.readdirSync(routesPath);
 
-const routes = data.reduce((routes, route) => {
+function generateRouters(routes, route) {
     if (route === "index.js") return routes;
     const router = require(path.join(routesPath, route));
     routes.push({
@@ -13,6 +12,8 @@ const routes = data.reduce((routes, route) => {
         router
     })
     return routes;
-}, []);
+}
+
+const routes = data.reduce(generateRouters, []);
 
 module.exports = routes;

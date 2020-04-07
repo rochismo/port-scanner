@@ -1,17 +1,26 @@
 require("dotenv").config();
+const port = process.env.PORT || 8000;
+function addRoutes({path, router}) {
+    app.use(`/${path}`, router);
+}
+
+function logAddressOnServerStart() {
+    console.log(`http://localhost:${port}`)
+}
 
 const express = require("express");
+const cors = require("cors");
+
 const routes = require("./src/routes");
 
 const app = express();
 
-const port = process.env.PORT || 8000;
 // Body parser middleware
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-routes.forEach(({path, router}) => app.use(`/${path}`, router));
+app.use(cors());
 
-app.listen(port, () => {
-    console.log(`http://localhost:${port}`)
-});
+routes.forEach(addRoutes);
+
+app.listen(port, logAddressOnServerStart);

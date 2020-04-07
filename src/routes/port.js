@@ -1,18 +1,28 @@
 const router = require("express").Router();
 const scanner = require("./../scanner");
 const defaultPorts = require("./../scanner/defaultPorts");
+
+function isPortOpen({open}) {
+    return open;
+}
+
 async function scan(req, res) {
     const ip = req.body.ip;
     const ports = req.body.ports || defaultPorts;
 
     const showClosed = req.body.showClosed;
     const results = await scanner.portListScan(ip, ports);
+
+    if (results.error) {
+        return res.status(404).json({error: results.error});
+    }
     
     if (showClosed) {
-        res.status(200).json(results);
-    } else {
-        res.status(200).json(results.filter(({open}) => !!open));
+        return res.status(200).json(results);
     }
+    
+    const openPorts = results.filter(isPortOpen);
+    res.status(200).json(openPorts);
 }
 
 router.post("/", scan);
