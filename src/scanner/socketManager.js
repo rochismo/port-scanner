@@ -44,7 +44,6 @@ module.exports = class SocketManager {
             socket.on("error", (error) => {
                 if (error.code === TIMEOUT) {
                     status.timeout = true;
-                    status.open = true;
                     status.info = "Probably filtered";
                 }
 
