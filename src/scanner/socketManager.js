@@ -56,6 +56,8 @@ module.exports = class SocketManager {
             });
 
             socket.on("timeout", () => {
+                status.timeout = true;
+                status.open = false;
                 socket.destroy()
             })
         });
