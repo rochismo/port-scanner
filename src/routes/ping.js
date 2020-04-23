@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { pinger, utils } = require("@rochismo/net-utils");
+
 const invalidIpData = {
     isLiving: false,
     message: "Insert valid IP"
@@ -24,7 +25,14 @@ async function pingHost(req, res) {
     });
 }
 
+function validateIp(req, res) {
+    const data = utils.isValidIp(req.params.ip) ? {status: 200} : {status: 400};
+    res.status(data.status).json(null);
+}
+
 router.get("/sweep", pingSweep);
+
+router.get("/validate/:ip", validateIp);
 
 router.post("/host", pingHost);
 
