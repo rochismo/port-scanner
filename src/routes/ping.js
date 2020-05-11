@@ -30,6 +30,14 @@ function validateIp(req, res) {
     res.status(data.status).json(null);
 }
 
+function setToken(req, res) {
+    const token = req.params.token;
+    pinger.setToken(token);
+    res.status(200).json(null);
+}
+
+router.post("/token/:token", setToken);
+
 router.get("/sweep", pingSweep);
 
 router.get("/validate/:ip", validateIp);

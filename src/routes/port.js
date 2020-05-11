@@ -10,16 +10,12 @@ async function scan(req, res) {
     const ip = req.body.ip;
     const ports = req.body.ports || defaultPorts;
 
-    const showClosed = req.body.showClosed;
     const results = await scanner.portListScan(ip, ports);
 
     if (results.error) {
         return res.status(404).json({error: results.error});
     }
     
-    if (showClosed) {
-        return res.status(200).json(results);
-    }
     
     const openPorts = results.filter(isPortOpen);
     res.status(200).json(openPorts);
