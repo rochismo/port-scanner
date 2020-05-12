@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+console.log(__dirname)
 
-const routesPath = path.join(process.cwd(), "src/routes");
+const routesPath = __dirname;
 const data = fs.readdirSync(routesPath);
 
 function generateRouters(routes, route) {

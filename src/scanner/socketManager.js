@@ -19,7 +19,7 @@ module.exports = class SocketManager {
                 open: false,
                 closed: false,
                 timeout: false,
-                info: "",
+                service: "",
                 port
             }
             socket.setTimeout(10000);
@@ -32,7 +32,6 @@ module.exports = class SocketManager {
             // In case we get data first
             socket.on("data", (data) => {
                 status.open = true;
-
                 socket.destroy();
             });
 

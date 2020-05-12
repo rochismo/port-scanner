@@ -1,5 +1,7 @@
-require("dotenv").config();
-const port = process.env.PORT || 8000;
+//process.on("uncaughtException", function() {})
+
+//require("dotenv").config();
+const port = process.env.PORT || 8081;
 function addRoutes({path, router}) {
     app.use(`/${path}`, router);
 }
