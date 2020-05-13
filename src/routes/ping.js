@@ -19,6 +19,7 @@ async function pingHost(req, res) {
         return res.status(400).json(invalidIpData);
     }
     const isLiving = await pinger.ping(ip);
+    isLiving.test = true;
     res.status(200).json({
         isLiving: isLiving,
         message: "valid IP"
