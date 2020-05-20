@@ -13,7 +13,7 @@ async function scan(req, res) {
     const results = await scanner.portListScan(ip, ports);
 
     if (results.error) {
-        return res.status(404).json({error: results.error});
+        return res.status(204).json({error: results.error});
     }
     
     
