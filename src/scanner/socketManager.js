@@ -11,8 +11,8 @@ process.on("uncaughtException", function(error) {
 module.exports = class SocketManager {
     constructor() {}
 
-    async createConnection(host, port) {
-        const bytes = await randomBytes(20);
+    async createConnection(host, port, payload = null) {
+        const bytes = payload || await randomBytes(20);
         return new Promise(resolve => {
             const socket = new Socket();
             const status = {
@@ -20,6 +20,7 @@ module.exports = class SocketManager {
                 closed: false,
                 timeout: false,
                 service: "",
+                response: "",
                 port
             }
             socket.setTimeout(10000);
@@ -32,6 +33,7 @@ module.exports = class SocketManager {
             // In case we get data first
             socket.on("data", (data) => {
                 status.open = true;
+                status.response = data.toString();
                 socket.destroy();
             });
 
