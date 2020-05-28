@@ -27,25 +27,8 @@ function findDefaultPort(port) {
 module.exports = class SocketManager {
     constructor() {}
 
-    async attemptHttpConnection(host, port) {
-        const status = generate(port);
-        const httpData = await isWeb(host, port);
-        if (httpData.data) {
-            const server = httpData.data.headers.server || `${httpData.data.headers['x-powered-by']} Server`
-            console.log(httpData.data.headers, port)
-            status.service = server || findDefaultPort(port);
-            status.open = true;
-        } else {
-            status.error = httpData.error;
-        }
-        return status;
-
-    }
-
     async createConnection(host, port) {
-        const bytes = await randomBytes(20);
-
-        const httpAttempt = await this.attemptHttpConnection(host, port);
+        const payload = ``
 
         if (!httpAttempt.error) {
             return httpAttempt
@@ -71,8 +54,10 @@ module.exports = class SocketManager {
 
             socket.on("close", hadError => {
                 if (!status.service) {
-                    findDefaultPort(port);
+                    status.service = findDefaultPort(port);
                 }
+
+                status.service = status.service.substr(0, 255);
                 resolve(status);
             });
             

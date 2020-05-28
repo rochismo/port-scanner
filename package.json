@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "ip-regex": "^4.1.0",
+    "parse-raw-http": "0.0.1",
     "private-ip": "^1.0.5",
     "random-bytes": "^1.0.0"
   },

@@ -17,7 +17,7 @@ module.exports = function (host, port) {
     const protocol = determineProtocol(port);
     const _url = `${protocol}://${host}:${port}/unexistent-resource-by-port-scanner`;
     const parsed = url.parse(_url);
-    parsed.timeout = 10000;
+    parsed.timeout = 3000;
 
     // Perform the request
     const request = protocols[protocol].get(parsed);
