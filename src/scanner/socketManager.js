@@ -27,6 +27,7 @@ function findDefaultPort(port) {
 module.exports = class SocketManager {
     constructor() {}
 
+<<<<<<< HEAD
     async createConnection(host, port) {
         const payload = ``
 
@@ -37,6 +38,20 @@ module.exports = class SocketManager {
             const socket = new Socket();
             const status = generate(port);
             
+=======
+    async createConnection(host, port, payload = null) {
+        const bytes = payload || await randomBytes(20);
+        return new Promise(resolve => {
+            const socket = new Socket();
+            const status = {
+                open: false,
+                closed: false,
+                timeout: false,
+                service: "",
+                response: "",
+                port
+            }
+>>>>>>> be34c2bdffbf9082328a50141ed0c67a1b74036e
             socket.setTimeout(10000);
             socket.connect(port, host);
             socket.on("connect", () => {
@@ -48,7 +63,11 @@ module.exports = class SocketManager {
             // In case we get data first
             socket.on("data", (data) => {
                 status.open = true;
+<<<<<<< HEAD
                 status.service = data.toString() || findDefaultPort(port)
+=======
+                status.response = data.toString();
+>>>>>>> be34c2bdffbf9082328a50141ed0c67a1b74036e
                 socket.destroy();
             });
 
