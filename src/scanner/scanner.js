@@ -20,7 +20,7 @@ module.exports = class PortScanner {
                     host,
                     port,
                     payload
-                );
+				);
                 resolve(response);
             } catch (error) {
                 resolve({ error: "Port closed" });
@@ -30,6 +30,7 @@ module.exports = class PortScanner {
 
     async portListScan(host, ports) {
         const scanPromises = ports.map((port) => this.scan(host, port));
+        console.log(scanPromises)
         const openPorts = await Promise.all(scanPromises);
         return openPorts;
     }
