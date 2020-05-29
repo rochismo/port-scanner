@@ -9,11 +9,6 @@ module.exports = class PortScanner {
     }
 
     async scan(host, port, payload = null) {
-        const pingData = await pinger.ping(host);
-        const { alive } = pingData;
-        if (!alive) {
-            return { error: "Host not alive" };
-        }
         return new Promise(async (resolve) => {
             try {
                 const response = await this.manager.createConnection(
@@ -29,8 +24,12 @@ module.exports = class PortScanner {
     }
 
     async portListScan(host, ports) {
+        const pingData = await pinger.ping(host);
+        const { alive } = pingData;
+        if (!alive) {
+            return { error: "Host not alive" };
+        }
         const scanPromises = ports.map((port) => this.scan(host, port));
-        console.log(scanPromises)
         const openPorts = await Promise.all(scanPromises);
         return openPorts;
     }

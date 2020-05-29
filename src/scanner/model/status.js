@@ -1,9 +1,10 @@
-module.exports = function(port) {
+module.exports = function(host, port) {
     return {
         open: false,
         closed: false,
         timeout: false,
         service: "",
-        port
+        port,
+        host
     }
 }

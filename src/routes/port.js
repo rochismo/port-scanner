@@ -13,25 +13,21 @@ async function scan(req, res) {
     try {
         const ip = req.body.ip;
         const ports = req.body.ports || defaultPorts;
-        console.log("Almost starting the scan")
         const results = await scanner.portListScan(ip, ports);
-        console.log("Scan finished")
         if (results.error) {
             return res.status(204).json({ error: results.error });
         }
 
         const openPorts = results.filter(isPortOpen);
-        console.log(openPorts);
         const portsWithServices = await Promise.all(
             openPorts.map((port) => {
                 return new Promise(async (resolve) => {
                     port.service = await finder.findService(port);
-                    return port;
+                    resolve(port);
                 });
             })
         );
-        console.log(portsWithServices);
-        res.status(200).json(openPorts);
+        res.status(200).json(portsWithServices);
     } catch(e) {
         console.log(e)
         res.status(400)
@@ -51,7 +47,7 @@ async function sendPayload(req, res) {
     const { port, host, payload } = req.body;
     const errors = [];
     if (!payload) {
-        errors.push("Please provide a payload");
+        errors.push({message: "Please provide a payload", shouldClosePort: false});
         return res.status(422).json(errors);
     }
     const results = await scanner.scan(host, port, payload);
