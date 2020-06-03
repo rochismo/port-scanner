@@ -8,14 +8,21 @@ module.exports = class PortScanner {
         this.sse = sse;
     }
 
-    async scan(host, port, payload = null) {
+    async scan(host, port, isSingle = false, payload = null) {
         return new Promise(async (resolve) => {
             try {
+                if (isSingle) {
+                    const pingData = await pinger.ping(host);
+                    const { alive } = pingData;
+                    if (!alive) {
+                        resolve({ error: "Host not alive" });
+                    }
+                }
                 const response = await this.manager.createConnection(
                     host,
                     port,
                     payload
-				);
+                );
                 resolve(response);
             } catch (error) {
                 resolve({ error: "Port closed" });

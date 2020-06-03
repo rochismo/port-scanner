@@ -13,12 +13,16 @@ async function scan(req, res) {
     try {
         const ip = req.body.ip;
         const ports = req.body.ports || defaultPorts;
+        const autoDetect = req.body.autoDetect;
         const results = await scanner.portListScan(ip, ports);
         if (results.error) {
             return res.status(204).json({ error: results.error });
         }
 
         const openPorts = results.filter(isPortOpen);
+        if (!autoDetect) {
+            return res.status(200).json(openPorts);
+        }
         const portsWithServices = await Promise.all(
             openPorts.map((port) => {
                 return new Promise(async (resolve) => {
@@ -36,11 +40,12 @@ async function scan(req, res) {
 
 async function checkAvailability(req, res) {
     const { port, host } = req.body;
-    const status = await scanner.scan(host, port);
+    const status = await scanner.scan(host, port, true);
+    console.log(status)
     if (status.error) {
         return res.status(404).json(null);
     }
-    res.status(200).json(status.open);
+    res.status(200).json(status);
 }
 
 async function sendPayload(req, res) {
@@ -50,7 +55,7 @@ async function sendPayload(req, res) {
         errors.push({message: "Please provide a payload", shouldClosePort: false});
         return res.status(422).json(errors);
     }
-    const results = await scanner.scan(host, port, payload);
+    const results = await scanner.scan(host, port, true, payload);
     if (results.error) {
         errors.push(results.error);
         return res.status(500).json(errors);
