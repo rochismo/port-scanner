@@ -1,6 +1,6 @@
 const { Socket } = require("net");
 const randomBytes = require("random-bytes");
-
+const createStatus = require("./model/status")
 const TIMEOUT = "ETIMEDOUT";
 const REFUSED = "ECONNREFUSED";
 
@@ -11,17 +11,11 @@ process.on("uncaughtException", function(error) {
 module.exports = class SocketManager {
     constructor() {}
 
-    async createConnection(host, port) {
-        const bytes = await randomBytes(20);
+    async createConnection(host, port, payload = null) {
+        const bytes = payload || await randomBytes(20);
         return new Promise(resolve => {
             const socket = new Socket();
-            const status = {
-                open: false,
-                closed: false,
-                timeout: false,
-                service: "",
-                port
-            }
+            const status = createStatus(host, port);
             socket.setTimeout(10000);
             socket.connect(port, host);
             socket.on("connect", () => {
@@ -32,6 +26,10 @@ module.exports = class SocketManager {
             // In case we get data first
             socket.on("data", (data) => {
                 status.open = true;
+                // Don't make the request larger
+                if (payload) {
+                    status.response = data.toString();
+                }
                 socket.destroy();
             });
 
@@ -50,6 +48,7 @@ module.exports = class SocketManager {
                     status.closed = true;
                     // In case it was set to open before
                     status.open = false;
+                    status.info = "Probably filtered";
                 }
                 socket.destroy();
             });
