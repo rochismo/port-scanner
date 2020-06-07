@@ -4,9 +4,7 @@ module.exports = class Finder {
     constructor() {}
 
     async findService(data) {
-        console.log(data);
         const response = await isWeb(data.host, data.port);
-        console.log(response)
         if (response.error) return this._findDefaultPort(data.port);
         const {headers} = response.data;
         const isHttps = response.data.isHttps

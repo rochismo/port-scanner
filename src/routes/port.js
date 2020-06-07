@@ -33,7 +33,6 @@ async function scan(req, res) {
         );
         res.status(200).json(portsWithServices);
     } catch(e) {
-        console.log(e)
         res.status(400)
     }
 }
@@ -41,7 +40,6 @@ async function scan(req, res) {
 async function checkAvailability(req, res) {
     const { port, host } = req.body;
     const status = await scanner.scan(host, port, true);
-    console.log(status)
     if (status.error) {
         return res.status(404).json(null);
     }
