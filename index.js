@@ -24,7 +24,3 @@ class PortScanner {
     }
 }
 module.exports = PortScanner;
-(async () => {
-    const scanner = new PortScanner();
-    await scanner.init();
-})();
